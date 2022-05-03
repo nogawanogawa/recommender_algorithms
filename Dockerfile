@@ -12,7 +12,7 @@ WORKDIR ${APP_PATH}
 ENV POETRY_HOME /root/.poetry/
 ENV PATH /root/.poetry/bin:$PATH
 
-COPY pyproject.toml poetry.lock /home
+COPY pyproject.toml poetry.lock /home/
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev --no-interaction
 

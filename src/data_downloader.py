@@ -21,5 +21,5 @@ if __name__ == '__main__':
     result = prepare_dataset()
     if not result:
         print("ERROR")
-    else
+    else:
         print("SUCCESS")
