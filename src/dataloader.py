@@ -25,4 +25,5 @@ def item(homedir='/home') -> pd.DataFrame:
 
     return pd.read_csv(os.path.join(homedir, 'ml-100k/u.item'), sep='|', header=None, names=cols, encoding="ISO-8859-1")
 
-print(item())
+if __name__ == "__main__":
+    print(item())
