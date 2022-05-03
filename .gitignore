@@ -1,0 +1,8 @@
+
+.python_history
+.bash_history
+ml-100k/
+.cache/
+.local/
+.poetry/
+*~
