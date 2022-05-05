@@ -10,3 +10,7 @@ ml-100k/
 src/__pycache__/
 
 mlruns/
+
+lgb_tree
+
+lgb_tree.svg
