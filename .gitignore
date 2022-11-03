@@ -14,3 +14,9 @@ mlruns/
 lgb_tree
 
 lgb_tree.svg
+
+.ipynb_checkpoints/
+
+.ipython/
+
+.jupyter/
