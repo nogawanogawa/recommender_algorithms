@@ -1,19 +1,20 @@
-import dataloader
 import pandas as pd
 import numpy as np
+import dataloader
 
 class CF:
     def __init__ (self, rating:pd.DataFrame):
         self.df = rating
     
-    def user_similarity(self, df: pd.DataFrame, threshold=0.2) -> pd.DataFrame:
+    def pearson_coefficient(self, df: pd.DataFrame, threshold=0.2) -> pd.DataFrame:
         """ユーザーに関する相関係数
         
         df : 列がitem, 行がuserを示すDataFrame
         threshold: 協調フィルタリングの計算に使用する際の相関係数の下限値
         """
         corr = df.T.corr() #ピアソンの相関係数
-        corr.values[[np.arange(corr.shape[0])]*2] = np.nan #対角線成分をnanに設定
+        corr.values[[np.arange(corr.shape[0])], [np.arange(corr.shape[0])]]= np.nan #対角線成分をnanに設定
+
         sim = corr.where(corr > threshold, np.nan)
         return sim 
 
@@ -61,6 +62,15 @@ class CF:
         return y_ybar
     
     def weight_sum(self, sim:pd.DataFrame, df: pd.DataFrame):
+        """荷重和を取る
+
+        Args:
+            sim (pd.DataFrame): 類似度を
+            df (pd.DataFrame): _description_
+
+        Returns:
+            _type_: _description_
+        """
         
         # ユーザーが付与した実際のレーティングを、評価していれば1, 評価していなければ0に変換 
         df_ = df.where(df.isna(), 1)
@@ -79,7 +89,7 @@ class CF:
 
         df = self.df
         
-        sim = self.user_similarity(df)
+        sim = self.pearson_coefficient(df)
         avg_user_rating = self.average_user_rating(df)
         y_ybar = self.user_rating_diff(df)
 
@@ -90,7 +100,7 @@ class CF:
 
 if __name__ == '__main__':
     df = dataloader.data()
-    df = df.pivot_table(index='use_id', columns='item_id', values='rating')
+    df = df.pivot_table(index='user_id', columns='item_id', values='rating')
     
     cf = CF(df)
     result = cf.run()
