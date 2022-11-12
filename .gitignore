@@ -7,8 +7,6 @@ ml-100k/
 .poetry/
 *~
 
-src/__pycache__/
-
 mlruns/
 
 lgb_tree
@@ -20,3 +18,7 @@ lgb_tree.svg
 .ipython/
 
 .jupyter/
+
+*/__pycache__/
+
+*/*/__pycache__/

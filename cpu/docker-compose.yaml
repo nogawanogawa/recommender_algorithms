@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  sandbox:
+    build: .
+    volumes:
+        - .:/home
+        - ./../util:/home/src/util
+        - ./../eval:/home/src/eval

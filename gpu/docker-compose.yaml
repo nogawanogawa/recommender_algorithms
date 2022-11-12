@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  sandbox:
+    build: .
+    volumes:
+        - .:/home/
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [utility, compute, video]
