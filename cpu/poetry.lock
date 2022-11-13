@@ -207,6 +207,19 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "implicit"
+version = "0.6.1"
+description = "Collaborative Filtering for Implicit Feedback Datasets"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+numpy = "*"
+scipy = ">=0.16"
+tqdm = ">=4.27"
+
+[[package]]
 name = "importlib-metadata"
 version = "5.0.0"
 description = "Read metadata from Python packages"
@@ -736,7 +749,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "a2df510264c7f2cab900ca7cee8b1b09604feb2317648ff2015a2e20678dec2f"
+content-hash = "7600d3373104b6db724824b06546319b737e7709e202405e9ef24713815dab73"
 
 [metadata.files]
 absl-py = [
@@ -986,6 +999,29 @@ grpcio = [
 idna = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
     {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
+]
+implicit = [
+    {file = "implicit-0.6.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:e9acad8508e11589c27a31b4111addeff1839cc555feda462dceb86b2ac382fa"},
+    {file = "implicit-0.6.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:fe7fa8838465ef1bc9246b7498f0e15c2a2bda8615cff3dc3195dfb4feceecdc"},
+    {file = "implicit-0.6.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:7fa64a55769ca9e140a343672e381c0bd112d14d590d5ad3cbd99df90f9a4f02"},
+    {file = "implicit-0.6.1-cp310-cp310-manylinux2014_x86_64.whl", hash = "sha256:dcdba18d7293a74ea13ad5f468cf00965048ace81254a262c3a6fa5356f759d8"},
+    {file = "implicit-0.6.1-cp310-cp310-win_amd64.whl", hash = "sha256:414bac3c688a9f03522fe753b75d6fd2d09d0e09ad6d2a4f544aadab67d7a16f"},
+    {file = "implicit-0.6.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:711c4494b93c927e5cf957a224d67ba8e957053afbd7b2d55bc76f15da9ea4f4"},
+    {file = "implicit-0.6.1-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:f6b750568ee524ae56a5185d594503685987fc5c1968a2058850404b0c3a994c"},
+    {file = "implicit-0.6.1-cp36-cp36m-win_amd64.whl", hash = "sha256:be65ad838d0d2a03f4d10542a137ffaaba6993868180fc0893d80a7fe81be1ca"},
+    {file = "implicit-0.6.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:07eeb24208a651abed85cfd337b75499057176fb55813605e6865648316991fa"},
+    {file = "implicit-0.6.1-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:2581f7d419e195a321509f637f4f42c6136ffc08707080e39b3820f94fd37039"},
+    {file = "implicit-0.6.1-cp37-cp37m-win_amd64.whl", hash = "sha256:01814a302de28c1eb9f582203b37a9735b243383aaf1218cab1bbaf8a58fae8b"},
+    {file = "implicit-0.6.1-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:19d8b7e6509f225340ab13e9fa7659619c3b0d683c22ef98a551c4e0b75583dc"},
+    {file = "implicit-0.6.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:22dc374fcdead642cb9b29e7b333377260d789a9180b17e87248d914999952fa"},
+    {file = "implicit-0.6.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:747cfc1f6daa4ee30d02fb2069da1cd87c470d40aecf9a10b23f01d93b12f94b"},
+    {file = "implicit-0.6.1-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:5054fac3f4d4a41ed590f69f7f9390f240b2bee4e6554ec03a6335c65b549142"},
+    {file = "implicit-0.6.1-cp38-cp38-win_amd64.whl", hash = "sha256:3e4cce205280c752088f8c48038831b33a90e046e38370550cf5107b1ba357cc"},
+    {file = "implicit-0.6.1-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:96a3260cf21396e90722e316624e45344faacd44437e9479f0ef91cce9f8dd2b"},
+    {file = "implicit-0.6.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:4ef0aeca203d9db73b16e7eba6db861e22106280f7ceec2873a24a20c69a7da0"},
+    {file = "implicit-0.6.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:657d15c0184b5afbeb4db6eb681d58032c7c1471a643d9e18d9a354172ec4eb6"},
+    {file = "implicit-0.6.1-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:42abe47b71a5b45aa3336b8d7837d4cfd9224742844b273c16ee2da43dc9c767"},
+    {file = "implicit-0.6.1-cp39-cp39-win_amd64.whl", hash = "sha256:4a93e682bf827895cf7e4b68ea554cd20b4fca6c0ea301dc7223937f5f39027a"},
 ]
 importlib-metadata = [
     {file = "importlib_metadata-5.0.0-py3-none-any.whl", hash = "sha256:ddb0e35065e8938f867ed4928d0ae5bf2a53b7773871bfe6bcc7e4fcdc7dea43"},

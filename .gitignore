@@ -22,3 +22,7 @@ lgb_tree.svg
 */__pycache__/
 
 */*/__pycache__/
+
+cpu/lightning_logs/
+
+cpu/pl-checkpoints/
