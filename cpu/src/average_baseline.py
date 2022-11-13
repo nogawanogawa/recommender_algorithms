@@ -1,4 +1,3 @@
-from util.dataloader import DataLoader
 from eval.eval_func import *
 from typing import Tuple, List
 from util.dataloader import Data
