@@ -130,57 +130,19 @@ if __name__ == "__main__":
     cf = CF(train_df)
     cf.train()
 
-    result = cf.predict(test_df[["user_id", "item_id"]])
-    test_df["rating_predict"] = result
-    test_df = test_df.dropna(subset=['rating_predict'])
+    # predict
+    pred_df = test_df.copy()
+    pred_df["y_pred"] = cf.predict(pred_df[["user_id", "item_id"]])
+    pred_df = pred_df.dropna(subset=['y_pred'])
 
-    ####### Evaluate #######
-    # RMSE
-    # わかっているratingについて、推定したratingとのRMSEを取得する
-    rmse_score = rmse(
-        test_df["rating_predict"].values.tolist(), test_df["rating"].values.tolist()
-    )
-    print(f"rmse: {rmse_score}")
+    pred_df["predicted_rank"] = pred_df.groupby(["user_id"])["y_pred"].rank(ascending=False, method='first')
+    pred_df = pred_df[["user_id", "item_id", "y_pred", "predicted_rank"]]
 
-    # Recall
-    # 推定ratingを上からk件とってきてそれのrecallを取る
-    k = 10
-    true_df = (
-        test_df.sort_values(["user_id", "rating", "item_id"], ascending=False)
-        .groupby("user_id")
-        .head(k)
-    )
-    y_true = (
-        true_df[["user_id", "item_id"]]
-        .groupby("user_id")["item_id"]
-        .apply(list)
-        .to_dict()
-    )
+    true_df = test_df.copy()
+    true_df = true_df[["user_id", "item_id", "rating"]].rename(columns={"rating":"y_true"})
+    true_df["optimal_rank"] = true_df.groupby(["user_id"])["y_true"].rank(ascending=False, method='first')
+    true_df = true_df[["user_id", "item_id", "y_true", "optimal_rank"]]
 
-    candidate = (
-        test_df.sort_values(["user_id", "rating_predict", "item_id"], ascending=False)
-        .groupby("user_id")
-        .head(k)
-    )
-    y_pred = (
-        candidate[["user_id", "item_id"]]
-        .groupby("user_id")["item_id"]
-        .apply(list)
-        .to_dict()
-    )
-    recall_socre = recall(y_pred, y_true)
-    print(f"recall@{k}: {recall_socre}")
+    result = eval(predict_recom=pred_df, true_recom=true_df)
+    print(result)
 
-    # nDCG
-    k = 10
-    pred_df = test_df[["user_id", "item_id"]]
-
-    pred_df = pred_df.merge(
-        test_df[["user_id", "item_id", "rating_predict"]], on=["user_id", "item_id"], how="left"
-    )
-    pred_df = pred_df.sort_values(["user_id", "rating_predict", "item_id"], ascending=False)
-    pred_df = (
-        pred_df.reset_index(drop=True).reset_index().rename(columns={"index": "rank"})
-    )
-    ndcg_score = ndcg(y_pred=pred_df, y_true=test_df, k=k)
-    print(f"ndcg@{k}: {ndcg_score}")
