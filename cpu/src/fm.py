@@ -31,7 +31,7 @@ class Parameters:
     early_stopping: bool = True
     early_stopping_patience: int = 10
     batch_size: int = 32
-    learning_rate: float = 0.01
+    learning_rate: float = 0.05
 
 params = Parameters()
 
