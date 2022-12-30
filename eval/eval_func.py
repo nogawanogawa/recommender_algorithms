@@ -105,7 +105,7 @@ def eval(predict_recom:pd.DataFrame, true_recom:pd.DataFrame) -> None:
     # recall
     y_true_dict = y[y["y_true"] > 3].groupby("user_id")["item_id"].apply(list).to_dict()
     y_pred_dict = y[y["predicted_rank"] <= k].groupby("user_id")["item_id"].apply(list).to_dict()
-    result['recall@10'] = recall(y_pred_dict, y_true_dict)
+    result[f'recall@{k}'] = recall(y_pred_dict, y_true_dict)
 
     # nDCG
     key = pd.concat([true_recom[["user_id", "item_id"]], predict_recom[["user_id", "item_id"]]]).drop_duplicates()
@@ -128,7 +128,7 @@ def eval(predict_recom:pd.DataFrame, true_recom:pd.DataFrame) -> None:
         ndcg_score = _ndcg(ranking, k)
         score += ndcg_score
         count += 1
-    result['ndcg@10']  = score / count
+    result[f'ndcg@{k}']  = score / count
 
     return result
 
