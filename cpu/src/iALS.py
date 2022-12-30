@@ -28,33 +28,35 @@ class iALS:
     def train(self, train_df):
         train_df = train_df[["user_id", "item_id", "rating"]]
 
-
         # Conversion via COO matrix
         coo = sparse.coo_matrix(
             (train_df["rating"], (self.user_index, self.movie_index)), shape=self.shape
         )
         self.csr = coo.tocsr()
 
-        data = sparse.csr_matrix(train_df.values)
         self.model = implicit.als.AlternatingLeastSquares(factors=64)
 
         # train
         self.model.fit(self.csr)
 
+        user_index = self.user_df["user_id"].drop_duplicates().astype(self.user_cat).cat.codes
+        ids, scores = self.model.recommend(
+            userid=user_index,
+            user_items=self.csr[user_index],
+            N=len(self.movies),
+        )
+
         self.result = pd.DataFrame()
-        for user_id in self.users:
-            df = self.predict_user(user_id)
+        for user_id, id, score in zip(user_index, ids, scores):
+            # もとのcompany_idに復元
+            user = self.user_cat.categories[user_id]
+            id = [self.movie_cat.categories[i] for i in id]
+            df = pd.DataFrame(
+                {"user_id": [user] * len(id), "item_id": id, "value": score}
+            )
             self.result = pd.concat([self.result, df])
 
         self.result = self.result.set_index(["user_id", "item_id"])
-
-    def predict_user(self, user_id):
-        try:
-            items, scores = self.model.recommend(userid=user_id, user_items=self.csr[user_id], N=self.shape[1])
-            return pd.DataFrame({"user_id": user_id, "item_id": items, "value": scores})
-        except:
-            return pd.DataFrame({"user_id": user_id, "item_id": self.movies , "value": np.nan})
-
 
     def predict(self, test_df):
 
