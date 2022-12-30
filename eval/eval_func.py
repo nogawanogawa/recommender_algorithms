@@ -14,7 +14,7 @@ def recall(y_pred: Dict[int, List[int]], y_true: Dict[int, List[int]], k:int=10)
     """ y_true に含まれるユーザーのrecallの平均 """
     recall = 0.0
     for key, value in y_true.items():
-        if len(value) < k:
+        if len(value) < k or key not in y_pred.keys():
             continue
         s = set(y_pred[key]).intersection(set(value))  # y_trueとy_predに共通で含まれる要素を取得
         recall += len(s) / len(set(value))
