@@ -48,7 +48,6 @@ class iALS:
 
         self.result = pd.DataFrame()
         for user_id, id, score in zip(user_index, ids, scores):
-            # もとのcompany_idに復元
             user = self.user_cat.categories[user_id]
             id = [self.movie_cat.categories[i] for i in id]
             df = pd.DataFrame(
