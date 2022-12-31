@@ -48,6 +48,7 @@ class iALS:
 
         self.result = pd.DataFrame()
         for user_id, id, score in zip(user_index, ids, scores):
+
             user = self.user_cat.categories[user_id]
             id = [self.movie_cat.categories[i] for i in id]
             df = pd.DataFrame(
@@ -58,7 +59,6 @@ class iALS:
         self.result = self.result.set_index(["user_id", "item_id"])
 
     def predict(self, test_df):
-
         return [self.predict_score(user_id, item_id) for user_id, item_id in test_df.values]
 
     def predict_score(self, user_id:int, item_id:int) -> float:
