@@ -3,7 +3,8 @@ from typing import Tuple, List
 from util.dataloader import Data
 from eval.eval_func import *
 
-class AverageRecommender():
+
+class AverageRecommender:
     def __init__(self):
         # predict時のもとになるdatafrme
         self.model = None
@@ -16,11 +17,13 @@ class AverageRecommender():
 
         return
 
-    def predict(self, test_df:pd.DataFrame) -> List[float]:
+    def predict(self, test_df: pd.DataFrame) -> List[float]:
         """ あたえられたdfのすべてのratingを返す """
-        return [self.predict_score(user_id, item_id) for user_id, item_id in test_df.values]
+        return [
+            self.predict_score(user_id, item_id) for user_id, item_id in test_df.values
+        ]
 
-    def predict_score(self, user_id:int, item_id:int) -> pd.DataFrame:
+    def predict_score(self, user_id: int, item_id: int) -> pd.DataFrame:
         """
         user_id, item_id毎の推論したratingを返す
         値が入っていない場合はNoneを返す
@@ -34,8 +37,10 @@ class AverageRecommender():
             except:
                 return
 
+
 def load_data() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    return Data().load() # user_df, item_df, train_df, test_df
+    return Data().load()  # user_df, item_df, train_df, test_df
+
 
 if __name__ == "__main__":
 
@@ -49,16 +54,21 @@ if __name__ == "__main__":
     # predict
     pred_df = test_df.copy()
     pred_df["y_pred"] = average_recommender.predict(test_df[["user_id", "item_id"]])
-    pred_df = pred_df.dropna(subset=['y_pred'])
+    pred_df = pred_df.dropna(subset=["y_pred"])
 
-    pred_df["predicted_rank"] = pred_df.groupby(["user_id"])["y_pred"].rank(ascending=False, method='first')
+    pred_df["predicted_rank"] = pred_df.groupby(["user_id"])["y_pred"].rank(
+        ascending=False, method="first"
+    )
     pred_df = pred_df[["user_id", "item_id", "y_pred", "predicted_rank"]]
 
     true_df = test_df.copy()
-    true_df = true_df[["user_id", "item_id", "rating"]].rename(columns={"rating":"y_true"})
-    true_df["optimal_rank"] = true_df.groupby(["user_id"])["y_true"].rank(ascending=False, method='first')
+    true_df = true_df[["user_id", "item_id", "rating"]].rename(
+        columns={"rating": "y_true"}
+    )
+    true_df["optimal_rank"] = true_df.groupby(["user_id"])["y_true"].rank(
+        ascending=False, method="first"
+    )
     true_df = true_df[["user_id", "item_id", "y_true", "optimal_rank"]]
 
     result = eval(predict_recom=pred_df, true_recom=true_df)
     print(result)
-

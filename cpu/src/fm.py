@@ -33,6 +33,7 @@ class Parameters:
     batch_size: int = 32
     learning_rate: float = 0.05
 
+
 params = Parameters()
 
 
@@ -84,7 +85,7 @@ class Model(pl.LightningModule):
         loss = self.loss_fn(pred, y)
         return {"val_loss": loss}
 
-   # predictのstep内の処理
+    # predictのstep内の処理
     def predict_step(self, batch, batch_index):
         X, y = batch
         pred = self(X)
@@ -125,6 +126,7 @@ class Model(pl.LightningModule):
         self.print(f"Train end")
         return super().on_train_end()
 
+
 callbacks = []
 
 # early stoppingをするなら
@@ -143,7 +145,8 @@ checkpoint_callback = ModelCheckpoint(
 )
 callbacks.append(checkpoint_callback)
 
-class FactorizationMachine():
+
+class FactorizationMachine:
     def __init__(self) -> None:
         pass
 
@@ -152,7 +155,10 @@ class FactorizationMachine():
         # TODO: CVを取る
         # ref: https://github.com/Lightning-AI/lightning/blob/master/examples/pl_loops/kfold.py
         X_train, X_valid, y_train, y_valid = train_test_split(
-            train_df.drop(columns=["rating"]), train_df[["rating"]], test_size=0.2, random_state=42
+            train_df.drop(columns=["rating"]),
+            train_df[["rating"]],
+            test_size=0.2,
+            random_state=42,
         )
 
         # convert to 32-bit numbers to send to GPU
@@ -189,8 +195,7 @@ class FactorizationMachine():
             val_dataloaders=valid_dataloader,
         )
 
-
-    def predict(self, test_df:pd.DataFrame) -> List[float]:
+    def predict(self, test_df: pd.DataFrame) -> List[float]:
         """ あたえられたdfのすべてのratingを返す """
 
         test = test_df.reset_index(drop=True)
@@ -219,6 +224,7 @@ class FactorizationMachine():
 
         return all_preds
 
+
 # for reproducibility
 def seed_everything(seed=1234):
     random.seed(seed)
@@ -231,6 +237,7 @@ def seed_everything(seed=1234):
 
 def load_data() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     return Data().load()  # user_df, item_df, train_df, test_df
+
 
 def preprocess(
     train_df: pd.DataFrame,
@@ -258,16 +265,21 @@ if __name__ == "__main__":
     # predict
     pred_df = test_df.copy()
     pred_df["y_pred"] = fm.predict(_test_df)
-    pred_df = pred_df.dropna(subset=['y_pred'])
+    pred_df = pred_df.dropna(subset=["y_pred"])
 
-    pred_df["predicted_rank"] = pred_df.groupby(["user_id"])["y_pred"].rank(ascending=False, method='first')
+    pred_df["predicted_rank"] = pred_df.groupby(["user_id"])["y_pred"].rank(
+        ascending=False, method="first"
+    )
     pred_df = pred_df[["user_id", "item_id", "y_pred", "predicted_rank"]]
 
     true_df = test_df.copy()
-    true_df = true_df[["user_id", "item_id", "rating"]].rename(columns={"rating":"y_true"})
-    true_df["optimal_rank"] = true_df.groupby(["user_id"])["y_true"].rank(ascending=False, method='first')
+    true_df = true_df[["user_id", "item_id", "rating"]].rename(
+        columns={"rating": "y_true"}
+    )
+    true_df["optimal_rank"] = true_df.groupby(["user_id"])["y_true"].rank(
+        ascending=False, method="first"
+    )
     true_df = true_df[["user_id", "item_id", "y_true", "optimal_rank"]]
 
     result = eval(predict_recom=pred_df, true_recom=true_df)
     print(result)
-

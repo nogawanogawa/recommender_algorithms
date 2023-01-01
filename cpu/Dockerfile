@@ -10,7 +10,7 @@ WORKDIR /home
 ENV POETRY_HOME /root/.poetry/
 ENV PATH /root/.poetry/bin:$PATH
 
-COPY ../pyproject.toml poetry.lock /home/
+COPY pyproject.toml poetry.lock /home/
 
 # poetry
 RUN curl -sSL https://install.python-poetry.org | python - && \
